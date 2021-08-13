@@ -1,1 +1,2 @@
 # SuperDraw
+A graphic library.
