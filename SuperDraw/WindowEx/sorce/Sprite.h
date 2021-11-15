@@ -2,6 +2,7 @@
 //  Sprite.h
 //
 //  Created by Oranges.
+//  E-mail 873516725@qq.com
 //  Copyright 2021 Oranges. All rights reserved.
 //
 
@@ -11,7 +12,6 @@
 #include <string>
 
 #include "WindowEx.h"
-using namespace SuperDraw;
 
 #include "Node.h"
 
@@ -22,11 +22,11 @@ public:
     virtual ~Sprite();
 
 public:
-    virtual void draw(DrawFactory* drawFactory, const Vec2& vecDelta) override;
+    virtual void draw(WindowEx::DrawFactory* drawFactory, const Vec2& vecDelta) override;
     virtual Size getContentSize() override;
 
 private:
-    Image* image = nullptr;
+    WindowEx::Image* image = nullptr;
 };
 
 #endif

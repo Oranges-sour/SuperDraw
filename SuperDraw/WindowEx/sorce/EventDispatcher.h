@@ -13,8 +13,8 @@
 #include <map>
 #include <string>
 
-#include "Ref.h"
 #include "Node.h"
+#include "Ref.h"
 #include "Tools.h"
 
 enum class MouseType { unknow, left, right };
@@ -75,16 +75,9 @@ public:
     EventReceiverMouse(EventReceiverMouse&) = delete;
     virtual ~EventReceiverMouse() {}
 
-    //返回false将截断以后的所有消息
-    std::function<bool(const Vec2&)> mouseDown = [](const Vec2&) -> bool {
-        return true;
-    };
-    std::function<bool(const Vec2&)> mouseUp = [](const Vec2&) -> bool {
-        return true;
-    };
-    std::function<bool(const Vec2&)> mouseMove = [](const Vec2&) -> bool {
-        return true;
-    };
+    std::function<void(const Vec2&)> mouseDown = [](const Vec2&) -> void {};
+    std::function<void(const Vec2&)> mouseUp = [](const Vec2&) -> void {};
+    std::function<void(const Vec2&)> mouseMove = [](const Vec2&) -> void {};
 
     MouseType mouseType;
     int ZOrder = 0;

@@ -2,6 +2,7 @@
 //  WindowEx.h
 //
 //  Created by Oranges.
+//  E-mail 873516725@qq.com
 //  Copyright 2021 Oranges. All rights reserved.
 //
 
@@ -29,7 +30,7 @@
 
 /*基于Direct2D的绘图扩展**************************************************/
 
-namespace SuperDraw {
+namespace WindowEx {
 class Image;
 class DrawFactory;
 
@@ -48,67 +49,20 @@ private:
     ID2D1Bitmap* pBitmap = nullptr;
 };
 
-enum class FontWeight  //字体的粗细
-{
-    light = 300,   //细--默认
-    normal = 500,  //普通
-    black = 900    //粗
-};
-
-enum class LineStyle  //线的两端点的样式
-{
-    flat,      //平整--默认
-    round,     //圆角
-    triangle,  //三角
-};
-
-class Color4B;
-class Color4F;
-
-class Color4B {
-public:
-    Color4B(int r, int g, int b, int a);
-    Color4B(const Color4B& other);
-    Color4B(const Color4F& other);
-
-    int red;
-    int green;
-    int blue;
-    int alpha;
-
-public:
-    static const Color4B WHITE;
-};
-
-class Color4F {
-public:
-    Color4F(float r, float g, float b, float a);
-    Color4F(const Color4F& other);
-    Color4F(const Color4B& other);
-
-    float red;
-    float green;
-    float blue;
-    float alpha;
-
-public:
-    static const Color4F WHITE;
-};
-
 class DrawFactory {
 public:
     DrawFactory(DrawFactory&) = delete;
     DrawFactory(){};
     virtual ~DrawFactory(){};
     void release();
-    bool init(HWND hwnd);
+    bool init(HWND hwnd, float dpiScale);
 
 public:
     void beginPaint();
     bool endPaint();
     void clear(const Color4B& color = Color4B::WHITE);
 
-    bool setStringStyle(int fontSize, FontWeight weight,
+    bool setStringStyle(float fontSize, FontWeight weight, FontStyle style,
                         const std::wstring& fontName);
 
     /*绘图普通函数****************************/
@@ -152,7 +106,7 @@ public:
     void setScale(const Vec2& center, float x, float y);
     //设置旋转
     void setRotation(const Vec2& center, float angle);
-    //应用缩放于旋转
+    //应用缩放与旋转
     void flushTransform();
 
 private:
@@ -166,10 +120,11 @@ private:
 
     friend bool loadIMAGE(Image* img, DrawFactory* drawFactory,
                           const std::wstring& fileName);
-   
+
     Vec2 scaleCenter;
     float scaleX = 0;
     float scaleY = 0;
+    float dpiScale = 1.0f;
 
     Vec2 rotateCenter;
     float rotateAngle = 0;
@@ -178,7 +133,7 @@ private:
 //其他函数
 HWND InitGraph(const Size& size, WNDPROC WndProc,
                const std::wstring& windowName);
-}  // namespace SuperDraw
+}  // namespace WindowEx
 
 /************************************************************************/
 

@@ -2,6 +2,7 @@
 //  UI.h
 //
 //  Created by Oranges.
+//  E-mail 873516725@qq.com
 //  Copyright 2021 Oranges. All rights reserved.
 //
 
@@ -14,7 +15,7 @@
 #include <vector>
 
 #include "WindowEx.h"
-using namespace SuperDraw;
+
 class EventReceiverLMouse;
 #include "Node.h"
 
@@ -48,7 +49,7 @@ public:
     virtual ~Button();
 
     //绘制按钮
-    virtual void draw(DrawFactory* drawFactory, const Vec2& vecDelta) override;
+    virtual void draw(WindowEx::DrawFactory* drawFactory, const Vec2& vecDelta) override;
 
     virtual void mouseDown(const Vec2& pos) override;
     virtual void mouseUp(const Vec2& pos) override;
@@ -66,7 +67,7 @@ public:
 private:
     //状态  0:抬起  1:按下
     // int status = 0;
-    std::array<Image*, 3> images;
+    std::array<WindowEx::Image*, 3> images;
 };
 
 class ToggleButton : public basic_Button {
@@ -83,7 +84,7 @@ public:
     virtual ~ToggleButton();
 
     //绘制按钮
-    virtual void draw(DrawFactory* drawFactory, const Vec2& vecDelta) override;
+    virtual void draw(WindowEx::DrawFactory* drawFactory, const Vec2& vecDelta) override;
 
     virtual void mouseDown(const Vec2& pos) override;
     virtual void mouseUp(const Vec2& pos) override;
@@ -110,7 +111,7 @@ private:
     2:按钮2抬起, 3:按钮2按下
     */
     // int status = 0;
-    std::array<Image*, 6> images;
+    std::array<WindowEx::Image*, 6> images;
 
     std::function<void(ToggleButton*, int)> toggle_func;
 };
@@ -122,7 +123,7 @@ public:
     virtual ~Menu();
     virtual void release() override;
 
-    virtual void draw(DrawFactory* drawFactory, const Vec2& vecDelta) override;
+    virtual void draw(WindowEx::DrawFactory* drawFactory, const Vec2& vecDelta) override;
     virtual void update(float dt);
 
     void addButton(basic_Button* button);

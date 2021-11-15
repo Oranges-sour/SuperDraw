@@ -2,6 +2,7 @@
 //  Random.h
 //
 //  Created by Oranges.
+//  E-mail 873516725@qq.com
 //  Copyright 2021 Oranges. All rights reserved.
 //
 
@@ -21,8 +22,7 @@ class rand_float;
 
 class Random {
 public:
-    static void init()
-    {
+    static void init() {
         seed = rd();
         srand(seed);
         e.seed(seed);
@@ -40,13 +40,11 @@ private:
 
 class rand_int {
 public:
-    rand_int(int min, int max)
-    {
+    rand_int(int min, int max) {
         r = new std::uniform_int_distribution<int>(min, max);
     }
     ~rand_int() { delete r; }
-    int operator()() const
-    {
+    int operator()() const {
         auto& engine = Random::getEngine();
         return (*r)(engine);
     }
@@ -57,13 +55,11 @@ private:
 
 class rand_float {
 public:
-    rand_float(float min, float max)
-    {
+    rand_float(float min, float max) {
         r = new std::uniform_real_distribution<float>(min, max);
     }
     ~rand_float() { delete r; }
-    float operator()() const
-    {
+    float operator()() const {
         auto& engine = Random::getEngine();
         return (*r)(engine);
     }
@@ -76,8 +72,7 @@ class rand_bool {
 public:
     rand_bool() {}
     ~rand_bool() {}
-    bool operator()() const
-    {
+    bool operator()() const {
         static rand_int r(0, 1);
         return static_cast<bool>(r());
     }
@@ -100,8 +95,7 @@ private:
 };
 
 template <class T>
-inline T RandWithRate<T>::operator()()
-{
+inline T RandWithRate<T>::operator()() {
     int percent = 0;
     for (size_t x = 0; x < set.size(); ++x) {
         percent += set[x].rate;

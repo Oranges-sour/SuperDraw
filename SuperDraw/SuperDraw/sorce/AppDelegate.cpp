@@ -7,25 +7,20 @@
 //
 
 #include "AppDelegate.h"
+
 #include "HelloWorldScene.h"
-#include "Director.h"
-#include "Random.h"
+#include "SuperDraw.h"
 
-void AppDelegate::init()
-{
-	appInfo.frameRate = 60;
-	appInfo.windowSize = Size(1280, 720);
-	appInfo.windowName = L"test";
-	Random::init();
+void AppDelegate::init() {
+    appInfo.frameRate = 65;
+    appInfo.windowSize = Size(1280, 720);
+    appInfo.windowName = L"test";
+    Random::init();
 }
 
-void AppDelegate::startApp()
-{
-	auto s = HelloWorldScene::create();
-	Director::instance->runWithScene(s);
+void AppDelegate::startApp() {
+    auto s = HelloWorldScene::create();
+    Director::instance->runWithScene(s);
 }
 
-const AppInfo& AppDelegate::getWindowInfo()
-{
-	return appInfo;
-}
+const AppInfo& AppDelegate::getWindowInfo() { return appInfo; }

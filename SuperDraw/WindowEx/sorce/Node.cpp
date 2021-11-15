@@ -1,10 +1,19 @@
-#include "Node.h"
-#include "EventDispatcher.h"
-#include "Action.h"
-using namespace std;
+//
+//  Node.cpp
+//
+//  Created by Oranges.
+//  E-mail 873516725@qq.com
+//  Copyright 2021 Oranges. All rights reserved.
+//
 
-Node* Node::create()
-{
+#include "Node.h"
+
+#include "Action.h"
+#include "EventDispatcher.h"
+using namespace std;
+using namespace WindowEx;
+
+Node* Node::create() {
     auto n = new (std::nothrow) Node{};
     if (n) {
         n->autorelease();
@@ -13,8 +22,7 @@ Node* Node::create()
     return nullptr;
 }
 
-void Node::update(float dt)
-{
+void Node::update(float dt) {
     this->updateSche(dt);
 
     //¸üÐÂAction
@@ -57,8 +65,7 @@ Node::Node() {}
 
 Node::~Node() {}
 
-void Node::release()
-{
+void Node::release() {
     for (auto it = actions.begin(); it != actions.end(); ++it) {
         (*it)->release();
     }
@@ -70,15 +77,15 @@ void Node::release()
         auto& receiver = *it;
         EventDispatcher::instance->unregist(receiver);
     }
-    for (auto it = keyboardRecevier.begin(); it != keyboardRecevier.end(); ++it) {
+    for (auto it = keyboardRecevier.begin(); it != keyboardRecevier.end();
+         ++it) {
         auto& receiver = *it;
         EventDispatcher::instance->unregist(receiver);
     }
     Ref::release();
 }
 
-void Node::draw(DrawFactory* drawFactory, const Vec2& vecDelta)
-{
+void Node::draw(DrawFactory* drawFactory, const Vec2& vecDelta) {
     if (!visible) {
         return;
     }
@@ -106,8 +113,7 @@ const Vec2& Node::getPosition() const { return position; }
 
 void Node::setPosition(const Vec2& position) { this->position = position; }
 
-void Node::setPosition(float x, float y)
-{
+void Node::setPosition(float x, float y) {
     position.x = x;
     position.y = y;
 }
@@ -122,23 +128,20 @@ void Node::setZOrder(int zOrder) { this->zOrder = zOrder; }
 
 const Vec2& Node::getScale() { return scale; }
 
-void Node::setScale(float x, float y)
-{
+void Node::setScale(float x, float y) {
     scale.x = x;
     scale.y = y;
 }
 
 void Node::setScale(const Vec2& scale) { this->scale = scale; }
 
-void Node::runAction(Action* action)
-{
+void Node::runAction(Action* action) {
     action->setNode(this);
     actions.push_back(action);
     action->retain();
 }
 
-void Node::stopAllActions()
-{
+void Node::stopAllActions() {
     for (auto& act : actions) {
         act->release();
     }
@@ -159,35 +162,30 @@ void Node::setParent(Node* node) { parent = node; }
 
 void Node::removeFromParent() { parent->removeChild(this); }
 
-Vec2 Node::convertPosToParent()
-{
+Vec2 Node::convertPosToParent() {
     if (parent == nullptr) {
         return position;
     }
     return position + parent->convertPosToParent();
 }
 
-void Node::addChild(Node* node)
-{
+void Node::addChild(Node* node) {
     node->retain();
     node->setParent(this);
     children.push_back(node);
 }
 
-void Node::addChild(Node* node, int ZOrder)
-{
+void Node::addChild(Node* node, int ZOrder) {
     node->setZOrder(ZOrder);
     this->addChild(node);
 }
 
 void Node::removeChild(Node* node) { needToErase.push_back(node); }
 
-void Node::addEventReceiver(EventReceiverMouse* mouseReceiver)
-{
+void Node::addEventReceiver(EventReceiverMouse* mouseReceiver) {
     this->mouseRecevier.push_back(mouseReceiver);
 }
 
-void Node::addEventReceiver(EventReceiverKeyboard* keyboardReceiver)
-{
+void Node::addEventReceiver(EventReceiverKeyboard* keyboardReceiver) {
     this->keyboardRecevier.push_back(keyboardReceiver);
 }

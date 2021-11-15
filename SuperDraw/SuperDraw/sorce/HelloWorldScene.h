@@ -3,9 +3,7 @@
 
 #include <string>
 
-#include "Layer.h"
-#include "Scene.h"
-#include "Sprite.h"
+#include "SuperDraw.h"
 
 class HelloWorldScene : public Scene {
 public:
@@ -19,5 +17,8 @@ public:
     void createBall();
     static Layer0* create();
     virtual bool init() override;
+
+private:
+    Sprite* ball = nullptr;
 };
 #endif

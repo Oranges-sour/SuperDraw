@@ -9,13 +9,12 @@
 #ifndef __DIRECTOR_H__
 #define __DIRECTOR_H__
 
-#include "WindowEx.h"
-using namespace SuperDraw;
-
 #include <string>
 
+#include "Label.h"
 #include "Scene.h"
 #include "Tools.h"
+#include "WindowEx.h"
 
 class Director final {
 private:
@@ -24,16 +23,18 @@ private:
     virtual ~Director() {}
 
 public:
-    static void createInstance(DrawFactory* drawFactory, const Size& winSize);
+    static void createInstance(WindowEx::DrawFactory* drawFactory,
+                               const Size& winSize);
     static void destoryInstance();
     static Director* instance;
 
 public:
+    void setDebugDraw(bool enableDebugDraw);
     void mainLoop(float dt);
     void runWithScene(Scene* scene);
     Vec2 convertPosition(const Vec2& pos);
     Size getVisibleSize();
-    DrawFactory* getDrawFactory();
+    WindowEx::DrawFactory* getDrawFactory();
 
 public:
     //Êó±ê×ó¼ü°´ÏÂ
@@ -52,10 +53,18 @@ public:
     void keyUp(const std::wstring& key);
 
 private:
+    void debugDraw(float dt);
+
+private:
+    bool enableDebugDraw = false;
+    Label* debugDrawLabel = nullptr;
+    float frameTime = 0;
+    int frameCount = 0;
+
     Size winSize;
     Scene* scene = nullptr;
     Scene* lastScene = nullptr;
-    DrawFactory* drawFactory = nullptr;
+    WindowEx::DrawFactory* drawFactory = nullptr;
 };
 
 #endif

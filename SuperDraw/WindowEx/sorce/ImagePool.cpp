@@ -1,14 +1,26 @@
+//
+//  ImagePool.cpp
+//
+//  Created by Oranges.
+//  E-mail 873516725@qq.com
+//  Copyright 2021 Oranges. All rights reserved.
+//
+
 #include "ImagePool.h"
 
 #include "Director.h"
-#include "WindowEx.h"
-using namespace SuperDraw;
+using namespace WindowEx;
 using namespace std;
 
 ImagePool* ImagePool::instance = new ImagePool{};
 
-Image* ImagePool::loadImage(const std::wstring& fileName)
-{
+ImagePool::~ImagePool() {
+    for (auto& it : pool) {
+        delete it.second;
+    }
+}
+
+Image* ImagePool::loadImage(const std::wstring& fileName) {
     auto iter = pool.find(fileName);
     if (iter != pool.end()) return iter->second;
     Image* image = new Image();
@@ -18,8 +30,7 @@ Image* ImagePool::loadImage(const std::wstring& fileName)
     return image;
 }
 
-void ImagePool::removeImage(const wstring& fileName)
-{
+void ImagePool::removeImage(const wstring& fileName) {
     auto iter = pool.find(fileName);
     if (iter != pool.end()) {
         iter->second->release();
@@ -28,8 +39,7 @@ void ImagePool::removeImage(const wstring& fileName)
     pool.erase(fileName);
 }
 
-Image* ImagePool::getImage(const wstring& fileName)
-{
+Image* ImagePool::getImage(const wstring& fileName) {
     auto iter = pool.find(fileName);
     if (iter != pool.end()) return iter->second;
     return nullptr;

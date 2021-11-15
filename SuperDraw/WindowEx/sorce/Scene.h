@@ -2,6 +2,7 @@
 //  Scene.h
 //
 //  Created by Oranges.
+//  E-mail 873516725@qq.com
 //  Copyright 2021 Oranges. All rights reserved.
 //
 
@@ -14,7 +15,7 @@ class Menu;
 #include <vector>
 
 #include "WindowEx.h"
-using namespace SuperDraw;
+
 #include "Node.h"
 #include "Schedule.h"
 #include "Tools.h"
@@ -26,7 +27,7 @@ public:
 
     virtual void update(float dt);
 
-    virtual void draw(DrawFactory* drawFactory);
+    virtual void draw(WindowEx::DrawFactory* drawFactory);
     virtual bool init() { return true; }
 
 private:
@@ -36,7 +37,7 @@ private:
     //触摸位置
     Vec2 touchPos;
     //是否按下
-    bool touchPressed;
+    bool touchPressed = false;
 };
 
 #endif

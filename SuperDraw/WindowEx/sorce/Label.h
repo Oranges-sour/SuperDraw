@@ -1,3 +1,10 @@
+//
+//  Label.h
+//
+//  Created by Oranges.
+//  E-mail 873516725@qq.com
+//  Copyright 2021 Oranges. All rights reserved.
+//
 
 #ifndef __LABEL_H__
 #define __LABEL_H__
@@ -11,27 +18,33 @@
 
 class Label : public Node {
 public:
-    static Label* create(
-        const std::wstring& font, const std::wstring& text = std::wstring(L""),
-        int fontSize = 12, const Rect& rect = Rect(0, 0, 0, 0),
-        SuperDraw::FontWeight weight = SuperDraw::FontWeight::normal,
-        const SuperDraw::Color4F& color = SuperDraw::Color4F::WHITE);
+    /*
+    @param rect: 坐标为左上角点    
+    */
+    static Label* create(const std::wstring& font,
+                         const std::wstring& text = std::wstring(L""),
+                         float fontSize = 12.0f,
+                         const Rect& rect = Rect(0, 0, 0, 0),
+                         FontWeight weight = FontWeight::light,
+                         FontStyle style = FontStyle::normal,
+                         const Color4F& color = Color4F::WHITE);
 
 public:
-    Label(const std::wstring& font, const std::wstring& text, int fontSize,
-          const Rect& rect, SuperDraw::FontWeight weight,
-          const SuperDraw::Color4F& color);
+    Label(const std::wstring& font, const std::wstring& text, float fontSize,
+          const Rect& rect, FontWeight weight, FontStyle style,
+          const Color4F& color);
     virtual ~Label();
-    virtual void draw(DrawFactory* drawFactory, const Vec2& vecDelta) override;
+    virtual void draw(WindowEx::DrawFactory* drawFactory,
+                      const Vec2& vecDelta) override;
 
     void setString(const std::wstring& text);
-    void setWeight(SuperDraw::FontWeight weight);
+    void setWeight(FontWeight weight);
 
-    void setColor(const SuperDraw::Color4F& color);
-    const SuperDraw::Color4F& getColor() const;
+    void setColor(const Color4F& color);
+    const Color4F& getColor() const;
 
-    void setFontSize(int size);
-    int getFontSize() const;
+    void setFontSize(float size);
+    float getFontSize() const;
 
     void setRect(const Rect& rect);
     const Rect& getRect() const;
@@ -42,12 +55,13 @@ private:
     const Vec2& getPosition() const override { return Vec2::ZERO; }
 
 private:
-    int fontSize = 0;
+    float fontSize = 0;
     std::wstring text;
     std::wstring font;
     Rect rect;
-    SuperDraw::FontWeight weight;
-    SuperDraw::Color4F color;
+    FontWeight weight;
+    FontStyle style;
+    Color4F color;
 };
 
 #endif

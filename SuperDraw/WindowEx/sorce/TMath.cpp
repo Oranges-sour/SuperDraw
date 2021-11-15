@@ -1,8 +1,16 @@
+//
+//  TMath.cpp
+//
+//  Created by Oranges.
+//  E-mail 873516725@qq.com
+//  Copyright 2021 Oranges. All rights reserved.
+//
+
 #include "TMath.h"
+
 #include "Random.h"
 
-Vec2 TMath::getPosOnLine(const Vec2& from, const Vec2& to, float distance)
-{
+Vec2 TMath::getPosOnLine(const Vec2& from, const Vec2& to, float distance) {
     auto newTo = to;
     //∑¿÷πkŒﬁœﬁ¥Û
     if (TMath::float_equal(from.x, newTo.x, 0.01f)) newTo.x -= 0.5;
@@ -14,8 +22,7 @@ Vec2 TMath::getPosOnLine(const Vec2& from, const Vec2& to, float distance)
     return Vec2(from.x + x, from.y + y);
 }
 
-Vec2 TMath::randPos(const Vec2& position, float min, float max)
-{
+Vec2 TMath::randPos(const Vec2& position, float min, float max) {
     auto result = position;
     rand_float r0(min, max);
     rand_bool r1;

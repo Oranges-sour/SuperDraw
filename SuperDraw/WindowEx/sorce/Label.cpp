@@ -1,18 +1,22 @@
+//
+//  Label.cpp
+//
+//  Created by Oranges.
+//  E-mail 873516725@qq.com
+//  Copyright 2021 Oranges. All rights reserved.
+//
 
 #include "Label.h"
 
-#include "WindowEx.h"
-using namespace SuperDraw;
 #include "Director.h"
 using namespace std;
+using namespace WindowEx;
 
 Label* Label::create(const std::wstring& font, const std::wstring& text,
-                     int fontSize, const Rect& rect,
-                     SuperDraw::FontWeight weight,
-                     const SuperDraw::Color4F& color)
-{
-    auto la =
-        new (std::nothrow) Label{font, text, fontSize, rect, weight, color};
+                     float fontSize, const Rect& rect, FontWeight weight,
+                     FontStyle style, const Color4F& color) {
+    auto la = new (std::nothrow)
+        Label{font, text, fontSize, rect, weight, style, color};
     if (la) {
         la->autorelease();
         return la;
@@ -20,22 +24,20 @@ Label* Label::create(const std::wstring& font, const std::wstring& text,
     return nullptr;
 }
 
-Label::Label(const std::wstring& font, const std::wstring& text, int fontSize,
-             const Rect& rect, SuperDraw::FontWeight weight,
-             const SuperDraw::Color4F& color)
+Label::Label(const std::wstring& font, const std::wstring& text, float fontSize,
+             const Rect& rect, FontWeight weight, FontStyle style,
+             const Color4F& color)
     : font(font),
       text(text),
       fontSize(fontSize),
       rect(rect),
       weight(weight),
-      color(color)
-{
-}
+      style(style),
+      color(color) {}
 
 Label::~Label() {}
 
-void Label::draw(DrawFactory* drawFactory, const Vec2& vecDelta)
-{
+void Label::draw(DrawFactory* drawFactory, const Vec2& vecDelta) {
     if (!isVisible()) {
         return;
     }
@@ -55,7 +57,7 @@ void Label::draw(DrawFactory* drawFactory, const Vec2& vecDelta)
     drawFactory->flushTransform();
 
     //*****
-    drawFactory->setStringStyle(fontSize, weight, font);
+    drawFactory->setStringStyle(fontSize, weight, style, font);
     drawFactory->drawString(pos, pos + Vec2(rect.width, rect.height), text,
                             color);
     //*****
@@ -63,15 +65,15 @@ void Label::draw(DrawFactory* drawFactory, const Vec2& vecDelta)
 
 void Label::setString(const std::wstring& text) { this->text = text; }
 
-void Label::setFontSize(int size) { fontSize = size; }
+void Label::setFontSize(float size) { fontSize = size; }
 
-int Label::getFontSize() const { return fontSize; }
+float Label::getFontSize() const { return fontSize; }
 
-void Label::setWeight(SuperDraw::FontWeight weight) { this->weight = weight; }
+void Label::setWeight(FontWeight weight) { this->weight = weight; }
 
-void Label::setColor(const SuperDraw::Color4F& color) { this->color = color; }
+void Label::setColor(const Color4F& color) { this->color = color; }
 
-const SuperDraw::Color4F& Label::getColor() const { return color; }
+const Color4F& Label::getColor() const { return color; }
 
 void Label::setRect(const Rect& rect) { this->rect = rect; }
 

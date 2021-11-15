@@ -14,8 +14,7 @@ using namespace std;
 
 EventDispatcher* EventDispatcher::instance = new EventDispatcher{};
 
-void EventDispatcher::regist(EventReceiverMouse* receiver, int ZOrder)
-{
+void EventDispatcher::regist(EventReceiverMouse* receiver, int ZOrder) {
     if (!receiver) {
         return;
     }
@@ -24,8 +23,7 @@ void EventDispatcher::regist(EventReceiverMouse* receiver, int ZOrder)
     mouseReceiverPool.insert({ZOrder, receiver});
 }
 
-void EventDispatcher::regist(EventReceiverKeyboard* receiver, int ZOrder)
-{
+void EventDispatcher::regist(EventReceiverKeyboard* receiver, int ZOrder) {
     if (!receiver) {
         return;
     }
@@ -34,8 +32,7 @@ void EventDispatcher::regist(EventReceiverKeyboard* receiver, int ZOrder)
     keyboardReceiverPool.insert({ZOrder, receiver});
 }
 
-void EventDispatcher::unregist(EventReceiverMouse* receiver)
-{
+void EventDispatcher::unregist(EventReceiverMouse* receiver) {
     if (!receiver) {
         return;
     }
@@ -56,8 +53,7 @@ void EventDispatcher::unregist(EventReceiverMouse* receiver)
     receiver->release();
 }
 
-void EventDispatcher::unregist(EventReceiverKeyboard* receiver)
-{
+void EventDispatcher::unregist(EventReceiverKeyboard* receiver) {
     if (!receiver) {
         return;
     }
@@ -78,88 +74,67 @@ void EventDispatcher::unregist(EventReceiverKeyboard* receiver)
     receiver->release();
 }
 
-void EventDispatcher::LMouseDown(const Vec2& pos)
-{
+void EventDispatcher::LMouseDown(const Vec2& pos) {
     for (auto it = mouseReceiverPool.begin(); it != mouseReceiverPool.end();
          ++it) {
         auto& rec = *it;
         if (rec.second->mouseType == MouseType::left) {
-            if (!rec.second->mouseDown(pos)) {
-                break;
-            }
+            rec.second->mouseDown(pos);
         }
     }
 }
 
-void EventDispatcher::LMouseUp(const Vec2& pos)
-{
+void EventDispatcher::LMouseUp(const Vec2& pos) {
     for (auto it = mouseReceiverPool.begin(); it != mouseReceiverPool.end();
          ++it) {
         auto& rec = *it;
         if (rec.second->mouseType == MouseType::left) {
-            if (!rec.second->mouseUp(pos)) {
-                break;
-            }
+            rec.second->mouseUp(pos);
         }
     }
 }
 
-void EventDispatcher::RMouseDown(const Vec2& pos)
-{
+void EventDispatcher::RMouseDown(const Vec2& pos) {
     for (auto it = mouseReceiverPool.begin(); it != mouseReceiverPool.end();
          ++it) {
         auto& rec = *it;
         if (rec.second->mouseType == MouseType::right) {
-            if (!rec.second->mouseDown(pos)) {
-                break;
-            }
+            rec.second->mouseDown(pos);
         }
     }
 }
 
-void EventDispatcher::RMouseUp(const Vec2& pos)
-{
+void EventDispatcher::RMouseUp(const Vec2& pos) {
     for (auto it = mouseReceiverPool.begin(); it != mouseReceiverPool.end();
          ++it) {
         auto& rec = *it;
         if (rec.second->mouseType == MouseType::right) {
-            if (!rec.second->mouseUp(pos)) {
-                break;
-            }
+            rec.second->mouseUp(pos);
         }
     }
 }
 
-void EventDispatcher::mouseMove(const Vec2& pos)
-{
+void EventDispatcher::mouseMove(const Vec2& pos) {
     for (auto it = mouseReceiverPool.begin(); it != mouseReceiverPool.end();
          ++it) {
         auto& rec = *it;
-        if (!rec.second->mouseMove(pos)) {
-            break;
-        }
+        rec.second->mouseMove(pos);
     }
 }
 
-void EventDispatcher::keyDown(const std::wstring& key)
-{
+void EventDispatcher::keyDown(const std::wstring& key) {
     for (auto it = keyboardReceiverPool.begin();
          it != keyboardReceiverPool.end(); ++it) {
         auto& rec = *it;
-        if (!rec.second->keyDown(key)) {
-            break;
-        }
+        rec.second->keyDown(key);
     }
 }
 
-void EventDispatcher::keyUp(const std::wstring& key)
-{
+void EventDispatcher::keyUp(const std::wstring& key) {
     for (auto it = keyboardReceiverPool.begin();
          it != keyboardReceiverPool.end(); ++it) {
         auto& rec = *it;
-        if (!rec.second->keyUp(key)) {
-            break;
-        }
+        rec.second->keyUp(key);
     }
 }
 
@@ -167,8 +142,7 @@ void EventDispatcher::keyUp(const std::wstring& key)
 //******************************************************************
 //******************************************************************
 
-EventReceiverKeyboard* EventReceiverKeyboard::create(Node* node, int ZOrder)
-{
+EventReceiverKeyboard* EventReceiverKeyboard::create(Node* node, int ZOrder) {
     auto rec = new (std::nothrow) EventReceiverKeyboard{};
     if (rec) {
         rec->autorelease();
@@ -179,8 +153,7 @@ EventReceiverKeyboard* EventReceiverKeyboard::create(Node* node, int ZOrder)
     return nullptr;
 }
 
-EventReceiverLMouse* EventReceiverLMouse::create(Node* node, int ZOrder)
-{
+EventReceiverLMouse* EventReceiverLMouse::create(Node* node, int ZOrder) {
     auto rec = new (std::nothrow) EventReceiverLMouse{};
     if (rec) {
         rec->autorelease();
@@ -191,8 +164,7 @@ EventReceiverLMouse* EventReceiverLMouse::create(Node* node, int ZOrder)
     return nullptr;
 }
 
-EventReceiverRMouse* EventReceiverRMouse::create(Node* node, int ZOrder)
-{
+EventReceiverRMouse* EventReceiverRMouse::create(Node* node, int ZOrder) {
     auto rec = new (std::nothrow) EventReceiverRMouse{};
     if (rec) {
         rec->autorelease();

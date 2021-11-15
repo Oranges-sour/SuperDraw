@@ -1,3 +1,11 @@
+//
+//  UI.cpp
+//
+//  Created by Oranges.
+//  E-mail 873516725@qq.com
+//  Copyright 2021 Oranges. All rights reserved.
+//
+
 #include "UI.h"
 
 #include <algorithm>
@@ -7,6 +15,7 @@
 #include "ImagePool.h"
 #include "Tools.h"
 using namespace std;
+using namespace WindowEx;
 
 //*********************************************************************************
 
@@ -16,8 +25,7 @@ bool basic_Button::isEnable() { return enable; }
 
 int basic_Button::getStatus() { return status; }
 
-void basic_Button::setCallBack(const function<void(basic_Button*)>& func)
-{
+void basic_Button::setCallBack(const function<void(basic_Button*)>& func) {
     this->func = func;
 }
 
@@ -28,8 +36,7 @@ const int Button::PUSH_DOWN{1};
 const int Button::DISABLE{2};
 
 Button* Button::create(const wstring& normal, const wstring& pushDown,
-                       const wstring& disable)
-{
+                       const wstring& disable) {
     auto b = new (std::nothrow) Button{normal, pushDown, disable};
     if (b) {
         b->autorelease();
@@ -39,8 +46,7 @@ Button* Button::create(const wstring& normal, const wstring& pushDown,
 }
 
 Button::Button(const wstring& normal, const wstring& pushDown,
-               const wstring& disable)
-{
+               const wstring& disable) {
     auto imgPool = ImagePool::instance;
     images[NORMAL] = imgPool->loadImage(normal);
     images[PUSH_DOWN] = imgPool->loadImage(pushDown);
@@ -50,8 +56,7 @@ Button::Button(const wstring& normal, const wstring& pushDown,
 
 Button::~Button() {}
 
-void Button::draw(DrawFactory* drawFactory, const Vec2& vecDelta)
-{
+void Button::draw(DrawFactory* drawFactory, const Vec2& vecDelta) {
     if (!isVisible()) return;
     auto size = images[NORMAL]->size();
     auto pos = this->getPosition();
@@ -81,22 +86,19 @@ void Button::draw(DrawFactory* drawFactory, const Vec2& vecDelta)
     //*****
 }
 
-void Button::setEnable(bool en)
-{
+void Button::setEnable(bool en) {
     if (en && !enable) status = NORMAL;
     basic_Button::setEnable(en);
 }
 
-void Button::mouseDown(const Vec2& pos)
-{
+void Button::mouseDown(const Vec2& pos) {
     auto rect = getButtonRect();
     if (rect.isInRect(pos) && enable) {
         status = PUSH_DOWN;
     }
 }
 
-void Button::mouseUp(const Vec2& pos)
-{
+void Button::mouseUp(const Vec2& pos) {
     if (enable && status == PUSH_DOWN) {
         auto rect = getButtonRect();
         if (rect.isInRect(pos)) {
@@ -106,8 +108,7 @@ void Button::mouseUp(const Vec2& pos)
     }
 }
 
-void Button::mouseMove(const Vec2& pos)
-{
+void Button::mouseMove(const Vec2& pos) {
     auto rect = getButtonRect();
     if (rect.isInRect(pos) && enable) {
         status = PUSH_DOWN;
@@ -116,8 +117,7 @@ void Button::mouseMove(const Vec2& pos)
     }
 }
 
-Rect Button::getButtonRect()
-{
+Rect Button::getButtonRect() {
     Rect rect;
     auto pos = this->convertPosToParent();
     auto size = images[NORMAL]->size();
@@ -143,8 +143,7 @@ ToggleButton* ToggleButton::create(const std::wstring& normal_0,
                                    const std::wstring& normal_1,
                                    const std::wstring& pushDown_1,
                                    const std::wstring& disable_0,
-                                   const std::wstring& disable_1)
-{
+                                   const std::wstring& disable_1) {
     auto tb = new (std::nothrow) ToggleButton{
         normal_0, pushDown_0, normal_1, pushDown_1, disable_0, disable_1};
     if (tb) {
@@ -159,8 +158,7 @@ ToggleButton::ToggleButton(const std::wstring& normal_0,
                            const std::wstring& normal_1,
                            const std::wstring& pushDown_1,
                            const std::wstring& disable_0,
-                           const std::wstring& disable_1)
-{
+                           const std::wstring& disable_1) {
     auto imgPool = ImagePool::instance;
     images[NORMAL_0] = imgPool->loadImage(normal_0);
     images[PUSH_DOWN_0] = imgPool->loadImage(pushDown_0);
@@ -173,8 +171,7 @@ ToggleButton::ToggleButton(const std::wstring& normal_0,
 
 ToggleButton::~ToggleButton() {}
 
-void ToggleButton::draw(DrawFactory* drawFactory, const Vec2& vecDelta)
-{
+void ToggleButton::draw(DrawFactory* drawFactory, const Vec2& vecDelta) {
     if (!isVisible()) {
         return;
     }
@@ -221,8 +218,7 @@ void ToggleButton::draw(DrawFactory* drawFactory, const Vec2& vecDelta)
     //*****
 }
 
-void ToggleButton::mouseDown(const Vec2& pos)
-{
+void ToggleButton::mouseDown(const Vec2& pos) {
     auto rect = getButtonRect();
     if (rect.isInRect(pos) && enable) {
         if (status == NORMAL_0) status = PUSH_DOWN_0;
@@ -230,8 +226,7 @@ void ToggleButton::mouseDown(const Vec2& pos)
     }
 }
 
-void ToggleButton::mouseUp(const Vec2& pos)
-{
+void ToggleButton::mouseUp(const Vec2& pos) {
     if (enable && (status == PUSH_DOWN_0 || status == PUSH_DOWN_1)) {
         auto rect = getButtonRect();
         bool isInRect = rect.isInRect(pos);
@@ -250,8 +245,7 @@ void ToggleButton::mouseUp(const Vec2& pos)
     }
 }
 
-void ToggleButton::mouseMove(const Vec2& pos)
-{
+void ToggleButton::mouseMove(const Vec2& pos) {
     auto rect = getButtonRect();
     if (rect.isInRect(pos) && enable) {
         if (status == NORMAL_0) status = PUSH_DOWN_0;
@@ -262,8 +256,7 @@ void ToggleButton::mouseMove(const Vec2& pos)
     }
 }
 
-Rect ToggleButton::getButtonRect()
-{
+Rect ToggleButton::getButtonRect() {
     Rect rect;
     auto pos = this->convertPosToParent();
     auto size = images[NORMAL_0]->size();
@@ -275,8 +268,7 @@ Rect ToggleButton::getButtonRect()
 
 Size ToggleButton::getContentSize() { return images[NORMAL_0]->size(); }
 
-void ToggleButton::setEnable(bool en)
-{
+void ToggleButton::setEnable(bool en) {
     if (en && !enable) {
         if (status == PUSH_DOWN_0) status = NORMAL_0;
         if (status == PUSH_DOWN_1) status = NORMAL_1;
@@ -285,15 +277,13 @@ void ToggleButton::setEnable(bool en)
 }
 
 void ToggleButton::setCallBack(
-    const function<void(ToggleButton*, int)>& callBack)
-{
+    const function<void(ToggleButton*, int)>& callBack) {
     toggle_func = callBack;
 }
 
 //*********************************************************************************
 
-Menu* Menu::create()
-{
+Menu* Menu::create() {
     auto m = new (std::nothrow) Menu();
     if (m) {
         m->autorelease();
@@ -302,8 +292,7 @@ Menu* Menu::create()
     return nullptr;
 }
 
-Menu::Menu()
-{
+Menu::Menu() {
     eventRec = EventReceiverLMouse::create(this, 1);
 
     eventRec->mouseDown = [&](const Vec2& pos) -> bool {
@@ -327,8 +316,7 @@ Menu::Menu()
 
 Menu::~Menu() {}
 
-void Menu::release()
-{
+void Menu::release() {
     EventDispatcher::instance->unregist(eventRec);
     for (auto it = buttons.begin(); it != buttons.end(); ++it) {
         (*it)->release();
@@ -336,8 +324,7 @@ void Menu::release()
     Node::release();
 }
 
-void Menu::draw(DrawFactory* drawFactory, const Vec2& vecDelta)
-{
+void Menu::draw(DrawFactory* drawFactory, const Vec2& vecDelta) {
     if (!isVisible()) {
         return;
     }
@@ -356,23 +343,20 @@ void Menu::draw(DrawFactory* drawFactory, const Vec2& vecDelta)
     }
 }
 
-void Menu::update(float dt)
-{
+void Menu::update(float dt) {
     for (auto it = buttons.begin(); it != buttons.end(); ++it) {
         auto& node = *it;
         node->update(dt);
     }
 }
 
-void Menu::addButton(basic_Button* button)
-{
+void Menu::addButton(basic_Button* button) {
     button->retain();
     button->setParent(this);
     buttons.push_back(button);
 }
 
-void Menu::removeButton(basic_Button* button)
-{
+void Menu::removeButton(basic_Button* button) {
     buttons.erase(remove(buttons.begin(), buttons.end(), button),
                   buttons.end());
     button->release();

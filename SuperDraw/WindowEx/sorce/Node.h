@@ -2,6 +2,7 @@
 //  Node.h
 //
 //  Created by Oranges.
+//  E-mail 873516725@qq.com
 //  Copyright 2021 Oranges. All rights reserved.
 //
 
@@ -9,7 +10,6 @@
 #define __NODE_H__
 
 #include "WindowEx.h"
-using namespace SuperDraw;
 
 #include "Action.h"
 #include "Ref.h"
@@ -29,7 +29,7 @@ public:
 public:
     static Node* create();
     //绘制节点
-    virtual void draw(DrawFactory* drawFactory, const Vec2& vecDelta);
+    virtual void draw(WindowEx::DrawFactory* drawFactory, const Vec2& vecDelta);
 
     //旋转的相关操作(图片中心为原点)
     virtual float getRotation() const;

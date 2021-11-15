@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="sorce\Action.cpp" />
     <ClCompile Include="sorce\Director.cpp" />
+    <ClCompile Include="sorce\DrawNode.cpp" />
     <ClCompile Include="sorce\EventDispatcher.cpp" />
     <ClCompile Include="sorce\ImagePool.cpp" />
     <ClCompile Include="sorce\KeyboardHelper.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="sorce\Scene.cpp" />
     <ClCompile Include="sorce\Schedule.cpp" />
     <ClCompile Include="sorce\Sprite.cpp" />
+    <ClCompile Include="sorce\SuperDraw.cpp" />
     <ClCompile Include="sorce\TMath.cpp" />
     <ClCompile Include="sorce\Tools.cpp" />
     <ClCompile Include="sorce\UI.cpp" />
@@ -40,6 +42,7 @@
   <ItemGroup>
     <ClInclude Include="sorce\Action.h" />
     <ClInclude Include="sorce\Director.h" />
+    <ClInclude Include="sorce\DrawNode.h" />
     <ClInclude Include="sorce\EventDispatcher.h" />
     <ClInclude Include="sorce\ImagePool.h" />
     <ClInclude Include="sorce\KeyboardHelper.h" />
@@ -51,6 +54,7 @@
     <ClInclude Include="sorce\Scene.h" />
     <ClInclude Include="sorce\Schedule.h" />
     <ClInclude Include="sorce\Sprite.h" />
+    <ClInclude Include="sorce\SuperDraw.h" />
     <ClInclude Include="sorce\TMath.h" />
     <ClInclude Include="sorce\Tools.h" />
     <ClInclude Include="sorce\UI.h" />

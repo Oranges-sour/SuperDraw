@@ -2,6 +2,7 @@
 //  Schedule.h
 //
 //  Created by Oranges.
+//  E-mail 873516725@qq.com
 //  Copyright 2021 Oranges. All rights reserved.
 //
 
@@ -12,32 +13,71 @@
 #include <map>
 #include <string>
 
-class Schedule {
+
+class Schedule
+{
 public:
-    //调度器更新
-    void updateSche(float dt);
+	/**
+	*逻辑定时器的主更新
+	*@param dt:距离上一次更新的时间
+	*@return 无
+	*/
+	void updateSche(float dt);
 
-    //调度器相关操作,时间单位:秒
-    void schedule(float interval, int times,
-                  const std::function<void(void)>& func,
-                  const std::wstring& key);
-    void schedule(float interval, const std::function<void(void)>& func,
-                  const std::wstring& key);
-    void scheduleOnce(float delay, const std::function<void(void)>& func,
-                      const std::wstring& key);
+	/**
+	*逻辑定时器,每一帧都更新
+	*@param callback:回调函数
+	*@param key:键值
+	*@return 无
+	*/
+	void schedule(const std::function<void(float)>& callback, const std::wstring& key);
 
-    void unschedule(const std::wstring& key);
+	/**
+	*逻辑定时器
+	*@param callback:回调函数
+	*@param interval:更新间隔(秒
+	*@param key:键值
+	*@return 无
+	*/
+	void schedule(const std::function<void(float)>& callback, float interval, const std::wstring& key);
 
+	/**
+	*逻辑定时器
+	*@param callback:回调函数
+	*@param interval:更新间隔(秒
+	*@param repeat:更新次数
+	*@param delay:第一次更新的延迟时间
+	*@param key:键值
+	*@return 无
+	*/
+	void schedule(const std::function<void(float)>& callback, float interval, int repeat, float delay, const std::wstring& key);
+
+	/**
+	*逻辑定时器,只更新一次
+	*@param callback:回调函数
+	*@param delay:第一次更新的延迟时间
+	*@param key:键值
+	*@return 无
+	*/
+	void scheduleOnce(const std::function<void(float)>& callback, float delay, const std::wstring& key);
+
+	/**
+	*取消逻辑定时器
+	*@param key:键值
+	*@return 无
+	*/
+	void unschedule(const std::wstring& key);
 private:
-    struct FuncPack {
-        std::function<void(void)> func;
-        float interval = 0;
-        int times = 0;
-        //距离上一次更新已经经过的时间
-        float realTime = 0;
-    };
+	struct SchedulePack
+	{
+		std::function<void(float)> callBack;
+		int repeat;
+		float delay;
+		float interval;
+		float timeCount;
+	};
 
-    std::map<std::wstring, FuncPack> schedulePool;
+	std::map<std::wstring, SchedulePack> scheduleMap;
 };
 
 #endif

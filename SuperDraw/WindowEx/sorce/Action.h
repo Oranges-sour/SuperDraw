@@ -9,11 +9,11 @@
 #ifndef __ACTION_H__
 #define __ACTION_H__
 
-class Node;
 #include <functional>
 #include <queue>
 #include <vector>
 
+class Node;
 #include "Ref.h"
 #include "Tools.h"
 
@@ -235,7 +235,7 @@ public:
     RotateTo(float time, float rotation);
     virtual ~RotateTo();
 
-    virtual void firstCall()override;
+    virtual void firstCall() override;
     virtual void update(float time) override;
 
 private:

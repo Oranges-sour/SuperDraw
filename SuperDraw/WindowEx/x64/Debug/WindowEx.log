@@ -1,0 +1,29 @@
+﻿  Action.cpp
+J:\图形库\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.h(21,1): fatal error C1189: #error:  Only on x86!
+  Director.cpp
+J:\图形库\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.h(21,1): fatal error C1189: #error:  Only on x86!
+  EventDispatcher.cpp
+J:\图形库\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.h(21,1): fatal error C1189: #error:  Only on x86!
+  ImagePool.cpp
+J:\图形库\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.h(21,1): fatal error C1189: #error:  Only on x86!
+  KeyboardHelper.cpp
+  Label.cpp
+J:\图形库\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.h(21,1): fatal error C1189: #error:  Only on x86!
+  Layer.cpp
+J:\图形库\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.h(21,1): fatal error C1189: #error:  Only on x86!
+  Node.cpp
+J:\图形库\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.h(21,1): fatal error C1189: #error:  Only on x86!
+  Random.cpp
+  Ref.cpp
+  Scene.cpp
+J:\图形库\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.h(21,1): fatal error C1189: #error:  Only on x86!
+  Schedule.cpp
+  Sprite.cpp
+J:\图形库\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.h(21,1): fatal error C1189: #error:  Only on x86!
+  TMath.cpp
+  Tools.cpp
+  UI.cpp
+J:\图形库\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.h(21,1): fatal error C1189: #error:  Only on x86!
+  WindowEx.cpp
+J:\图形库\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.h(21,1): fatal error C1189: #error:  Only on x86!
+  正在生成代码...

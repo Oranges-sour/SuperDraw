@@ -26,8 +26,7 @@ ActionInterval::~ActionInterval() {}
 
 void ActionInterval::firstCall() {}
 
-void ActionInterval::step(float time)
-{
+void ActionInterval::step(float time) {
     if (_firstCall) {
         firstCall();
         _firstCall = false;
@@ -49,8 +48,7 @@ float ActionInterval::getDuration() { return duration; }
 
 //**********************************************************************************
 
-Sequence* Sequence::create(const std::vector<Action*>& actions)
-{
+Sequence* Sequence::create(const std::vector<Action*>& actions) {
     auto s = new (std::nothrow) Sequence{actions};
     if (s) {
         s->autorelease();
@@ -59,16 +57,14 @@ Sequence* Sequence::create(const std::vector<Action*>& actions)
     return nullptr;
 }
 
-Sequence::Sequence(const vector<Action*>& actions)
-{
+Sequence::Sequence(const vector<Action*>& actions) {
     for (auto& act : actions) {
         act->retain();
         this->actions.push(act);
     }
 }
 
-Sequence::~Sequence()
-{
+Sequence::~Sequence() {
     while (!actions.empty()) {
         auto& act = actions.front();
         act->release();
@@ -76,8 +72,7 @@ Sequence::~Sequence()
     }
 }
 
-void Sequence::step(float time)
-{
+void Sequence::step(float time) {
     auto& act = actions.front();
     act->step(time);
     if (act->isRunFinish()) {
@@ -89,8 +84,7 @@ void Sequence::step(float time)
     }
 }
 
-void Sequence::setNode(Node* node)
-{
+void Sequence::setNode(Node* node) {
     if (actions.empty()) {
         return;
     }
@@ -111,8 +105,7 @@ void Sequence::update(float time) {}
 
 //**********************************************************************************
 
-Spawn* Spawn::create(const vector<Action*>& actions)
-{
+Spawn* Spawn::create(const vector<Action*>& actions) {
     auto s = new (std::nothrow) Spawn{actions};
     if (s) {
         s->autorelease();
@@ -121,23 +114,20 @@ Spawn* Spawn::create(const vector<Action*>& actions)
     return nullptr;
 }
 
-Spawn::Spawn(const vector<Action*>& actions)
-{
+Spawn::Spawn(const vector<Action*>& actions) {
     this->actions = actions;
     for (auto& act : this->actions) {
         act->retain();
     }
 }
 
-Spawn::~Spawn()
-{
+Spawn::~Spawn() {
     for (auto& act : actions) {
         act->release();
     }
 }
 
-void Spawn::step(float time)
-{
+void Spawn::step(float time) {
     bool allFinish = true;
     for (auto& act : actions) {
         act->step(time);
@@ -150,8 +140,7 @@ void Spawn::step(float time)
     }
 }
 
-void Spawn::setNode(Node* node)
-{
+void Spawn::setNode(Node* node) {
     for (auto& act : actions) {
         act->setNode(node);
     }
@@ -161,8 +150,7 @@ void Spawn::update(float time) {}
 
 //**********************************************************************************
 
-DelayTime* DelayTime::create(float duration)
-{
+DelayTime* DelayTime::create(float duration) {
     auto d = new (std::nothrow) DelayTime{duration};
     if (d) {
         d->autorelease();
@@ -175,8 +163,7 @@ DelayTime::DelayTime(float duration) { this->duration = duration; }
 
 DelayTime::~DelayTime() {}
 
-void DelayTime::step(float time)
-{
+void DelayTime::step(float time) {
     pastTime += time;
     if (pastTime >= duration) {
         runFinish = true;
@@ -187,8 +174,7 @@ void DelayTime::update(float time) {}
 
 //**********************************************************************************
 
-CallFunc* CallFunc::create(const function<void()>& func)
-{
+CallFunc* CallFunc::create(const function<void()>& func) {
     auto c = new (std::nothrow) CallFunc{func};
     if (c) {
         c->autorelease();
@@ -201,8 +187,7 @@ CallFunc::CallFunc(const function<void()>& func) { this->func = func; }
 
 CallFunc::~CallFunc() {}
 
-void CallFunc::step(float time)
-{
+void CallFunc::step(float time) {
     func();
     runFinish = true;
 }
@@ -211,8 +196,7 @@ void CallFunc::update(float time) {}
 
 //**********************************************************************************
 
-CallFuncN* CallFuncN::create(const function<void(Node*)>& func)
-{
+CallFuncN* CallFuncN::create(const function<void(Node*)>& func) {
     auto c = new (std::nothrow) CallFuncN{func};
     if (c) {
         c->autorelease();
@@ -225,8 +209,7 @@ CallFuncN::CallFuncN(const function<void(Node*)>& func) { this->func = func; }
 
 CallFuncN::~CallFuncN() {}
 
-void CallFuncN::step(float time)
-{
+void CallFuncN::step(float time) {
     func(node);
     runFinish = true;
 }
@@ -243,17 +226,16 @@ const function<float(float, float)> EaseFunction::easeOut =
 
 const function<float(float, float)> EaseFunction::easeInOut =
     [](float time, float rate) -> float {
-    if ((time *= 2) < 1) {
-        return 0.5f * pow(time, rate);
+    if (time <= 0.5f) {
+        return 0.5f * pow(time * 2, rate);
     }
-    return (1.0f - 0.5f * pow(2 - time, rate));
+    return -0.5f * pow(-2.0f * time + 2, rate) + 1;
 };
 
 //**********************************************************************************
 
 EaseAction* EaseAction::create(ActionInterval* action, float rate,
-                               const function<float(float, float)>& func)
-{
+                               const function<float(float, float)>& func) {
     auto eio = new (std::nothrow) EaseAction{action, rate, func};
     if (eio) {
         eio->autorelease();
@@ -264,8 +246,7 @@ EaseAction* EaseAction::create(ActionInterval* action, float rate,
 
 EaseAction::EaseAction(ActionInterval* action, float rate,
                        const function<float(float, float)>& func)
-    : ActionInterval(action->getDuration())
-{
+    : ActionInterval(action->getDuration()) {
     this->action = action;
     this->rate = rate;
     this->easeFunc = func;
@@ -282,8 +263,7 @@ void EaseAction::setNode(Node* node) { action->setNode(node); }
 
 //**********************************************************************************
 
-MoveBy* MoveBy::create(float time, const Vec2& deltaPos)
-{
+MoveBy* MoveBy::create(float time, const Vec2& deltaPos) {
     auto move = new (std::nothrow) MoveBy{time, deltaPos};
     if (move) {
         move->autorelease();
@@ -292,15 +272,13 @@ MoveBy* MoveBy::create(float time, const Vec2& deltaPos)
     return nullptr;
 }
 
-MoveBy::MoveBy(float time, const Vec2& deltaPos) : ActionInterval(time)
-{
+MoveBy::MoveBy(float time, const Vec2& deltaPos) : ActionInterval(time) {
     this->deltaPos = deltaPos;
 }
 
 MoveBy::~MoveBy() {}
 
-void MoveBy::update(float time)
-{
+void MoveBy::update(float time) {
     auto& nowPos = node->getPosition();
     auto p1 = deltaPos * time;
     auto newPos = nowPos - lastPos + p1;
@@ -310,8 +288,7 @@ void MoveBy::update(float time)
 
 //**********************************************************************************
 
-MoveTo* MoveTo::create(float time, const Vec2& toPos)
-{
+MoveTo* MoveTo::create(float time, const Vec2& toPos) {
     auto move = new (std::nothrow) MoveTo{time, toPos};
     if (move) {
         move->autorelease();
@@ -320,23 +297,20 @@ MoveTo* MoveTo::create(float time, const Vec2& toPos)
     return nullptr;
 }
 
-MoveTo::MoveTo(float time, const Vec2& toPos) : MoveBy(time, Vec2{})
-{
+MoveTo::MoveTo(float time, const Vec2& toPos) : MoveBy(time, Vec2{}) {
     this->toPos = toPos;
 }
 
 MoveTo::~MoveTo() {}
 
-void MoveTo::firstCall()
-{
+void MoveTo::firstCall() {
     auto& nodePos = node->getPosition();
     deltaPos = toPos - nodePos;
 }
 
 //**********************************************************************************
 
-FadeIn* FadeIn::create(float time)
-{
+FadeIn* FadeIn::create(float time) {
     auto fi = new (std::nothrow) FadeIn{time};
     if (fi) {
         fi->autorelease();
@@ -349,8 +323,7 @@ FadeIn::~FadeIn() {}
 
 FadeIn::FadeIn(float time) : ActionInterval(time) {}
 
-void FadeIn::update(float time)
-{
+void FadeIn::update(float time) {
     float nowOp = node->getOpacity();
     float op1 = deltaOp * time;
     float newOp = nowOp - lastOp + op1;
@@ -358,16 +331,14 @@ void FadeIn::update(float time)
     lastOp = op1;
 }
 
-void FadeIn::firstCall()
-{
+void FadeIn::firstCall() {
     float startOp = node->getOpacity();
     deltaOp = 1.0f - startOp;
 }
 
 //**********************************************************************************
 
-FadeOut* FadeOut::create(float time)
-{
+FadeOut* FadeOut::create(float time) {
     auto fi = new (std::nothrow) FadeOut{time};
     if (fi) {
         fi->autorelease();
@@ -380,8 +351,7 @@ FadeOut::~FadeOut() {}
 
 FadeOut::FadeOut(float time) : ActionInterval(time) {}
 
-void FadeOut::update(float time)
-{
+void FadeOut::update(float time) {
     float nowOp = node->getOpacity();
     float op1 = deltaOp * time;
     float newOp = nowOp - lastOp + op1;
@@ -389,16 +359,14 @@ void FadeOut::update(float time)
     lastOp = op1;
 }
 
-void FadeOut::firstCall()
-{
+void FadeOut::firstCall() {
     float startOp = node->getOpacity();
     deltaOp = -startOp;
 }
 
 //**********************************************************************************
 
-FadeTo* FadeTo::create(float time, float opacity)
-{
+FadeTo* FadeTo::create(float time, float opacity) {
     auto f = new (std::nothrow) FadeTo{time, opacity};
     if (f) {
         f->autorelease();
@@ -407,8 +375,7 @@ FadeTo* FadeTo::create(float time, float opacity)
     return nullptr;
 }
 
-FadeTo::FadeTo(float time, float opacity) : ActionInterval(time)
-{
+FadeTo::FadeTo(float time, float opacity) : ActionInterval(time) {
     endOp = opacity;
 }
 
@@ -416,16 +383,14 @@ FadeTo::~FadeTo() {}
 
 void FadeTo::update(float time) { node->setOpacity(startOp + deltaOp * time); }
 
-void FadeTo::firstCall()
-{
+void FadeTo::firstCall() {
     startOp = node->getOpacity();
     deltaOp = endOp - startOp;
 }
 
 //**********************************************************************************
 
-RotateBy* RotateBy::create(float time, float rotation)
-{
+RotateBy* RotateBy::create(float time, float rotation) {
     auto r = new (std::nothrow) RotateBy{time, rotation};
     if (r) {
         r->autorelease();
@@ -434,15 +399,13 @@ RotateBy* RotateBy::create(float time, float rotation)
     return nullptr;
 }
 
-RotateBy::RotateBy(float time, float rotation) : ActionInterval(time)
-{
+RotateBy::RotateBy(float time, float rotation) : ActionInterval(time) {
     deltaRotation = rotation;
 }
 
 RotateBy::~RotateBy() {}
 
-void RotateBy::update(float time)
-{
+void RotateBy::update(float time) {
     float nowRotation = node->getRotation();
     float r1 = deltaRotation * time;
     float newRotation = nowRotation - lastRotation + r1;
@@ -452,8 +415,7 @@ void RotateBy::update(float time)
 
 //**********************************************************************************
 
-RotateTo* RotateTo::create(float time, float rotation)
-{
+RotateTo* RotateTo::create(float time, float rotation) {
     auto r = new (std::nothrow) RotateTo{time, rotation};
     if (r) {
         r->autorelease();
@@ -462,21 +424,18 @@ RotateTo* RotateTo::create(float time, float rotation)
     return nullptr;
 }
 
-RotateTo::RotateTo(float time, float rotation) : RotateBy(time, 0)
-{
+RotateTo::RotateTo(float time, float rotation) : RotateBy(time, 0) {
     toRotation = rotation;
 }
 
 RotateTo::~RotateTo() {}
 
-void RotateTo::firstCall()
-{
+void RotateTo::firstCall() {
     float nowRotation = node->getRotation();
     deltaRotation = toRotation - nowRotation;
 }
 
-void RotateTo::update(float time)
-{
+void RotateTo::update(float time) {
     float nowRotation = node->getRotation();
     float r1 = deltaRotation * time;
     float newRotation = nowRotation - lastRotation + r1;
@@ -486,8 +445,7 @@ void RotateTo::update(float time)
 
 //**********************************************************************************
 
-ScaleTo* ScaleTo::create(float time, float scale)
-{
+ScaleTo* ScaleTo::create(float time, float scale) {
     auto s = new (std::nothrow) ScaleTo{time, scale};
     if (s) {
         s->autorelease();
@@ -496,21 +454,18 @@ ScaleTo* ScaleTo::create(float time, float scale)
     return nullptr;
 }
 
-ScaleTo::ScaleTo(float time, float scale) : ActionInterval(time)
-{
+ScaleTo::ScaleTo(float time, float scale) : ActionInterval(time) {
     endScale = scale;
 }
 
 ScaleTo::~ScaleTo() {}
 
-void ScaleTo::update(float time)
-{
+void ScaleTo::update(float time) {
     float s = startScale.x + deltaScale * time;
     node->setScale(s, s);
 }
 
-void ScaleTo::firstCall()
-{
+void ScaleTo::firstCall() {
     startScale = node->getScale();
     deltaScale = endScale - startScale.x;
 }

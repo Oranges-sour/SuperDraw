@@ -2,5 +2,3 @@ BasedOnStyle: Google
 IndentWidth: 4
 BreakBeforeBraces: Custom
 AccessModifierOffset: -4
-BraceWrapping:
-    AfterFunction: true

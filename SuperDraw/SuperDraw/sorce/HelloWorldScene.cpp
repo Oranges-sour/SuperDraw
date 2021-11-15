@@ -1,5 +1,6 @@
 #include "HelloWorldScene.h"
 
+#include <sstream>
 #include <string>
 
 #include "Action.h"
@@ -11,8 +12,7 @@
 #include "TMath.h"
 using namespace std;
 
-HelloWorldScene* HelloWorldScene::create()
-{
+HelloWorldScene* HelloWorldScene::create() {
     auto s = new (std::nothrow) HelloWorldScene();
     if (s && s->init()) {
         s->autorelease();
@@ -21,8 +21,7 @@ HelloWorldScene* HelloWorldScene::create()
     return nullptr;
 }
 
-bool HelloWorldScene::init()
-{
+bool HelloWorldScene::init() {
     auto l = Layer0::create();
     this->addChild(l, 1);
     return true;
@@ -30,8 +29,7 @@ bool HelloWorldScene::init()
 
 void HelloWorldScene::release() { Scene::release(); }
 
-Layer0* Layer0::create()
-{
+Layer0* Layer0::create() {
     auto l = new (std::nothrow) Layer0();
     if (l && l->init()) {
         l->autorelease();
@@ -40,34 +38,29 @@ Layer0* Layer0::create()
     return nullptr;
 }
 
-bool Layer0::init()
-{
+bool Layer0::init() {
+    Director::instance->setDebugDraw(true);
     createBall();
 
-    auto l = Label::create(L"Consolas", L"hiiiiiiiiii\niiiiiiii\r\n\r\n", 10,
-                           Rect(300, 300, 500, 0));
-    this->addChild(l);
-
-    this->schedule(
-        0.1f, [&, l]() { l->setFontSize(l->getFontSize() + 1); },
-        L"crateBalll");
-
     auto mouse = EventReceiverLMouse::create(this, 1);
-    mouse->mouseMove = [&](const Vec2& pos) -> bool { return true; };
+    mouse->mouseMove = [&](const Vec2& pos) -> void { ball->setPosition(pos); };
+    mouse->mouseDown = [&](const Vec2& pos) -> void {
+        auto act0 = ScaleTo::create(0.8f, 1.5f);
+        auto eact0 = EaseAction::create(act0, 3, EaseFunction::easeInOut);
+        ball->stopAllActions();
+        ball->runAction(eact0);
+    };
+    mouse->mouseUp = [&](const Vec2& pos) -> void {
+        auto act1 = ScaleTo::create(0.8f, 1.0f);
+        auto eact1 = EaseAction::create(act1, 3, EaseFunction::easeInOut);
+        ball->stopAllActions();
+        ball->runAction(eact1);
+    };
     return true;
 }
 
-void Layer0::createBall()
-{
+void Layer0::createBall() {
     auto size = Director::instance->getVisibleSize();
-
-    auto a1 = Sprite::create(L"Image\\circle.png");
-    // a1->setOpacity(0);
-    a1->setPosition(Vec2(300, 300));
-    this->addChild(a1, 1);
-
-    auto act1 = ScaleTo::create(2, 5);
-    auto act2 = ScaleTo::create(2, 2);
-    auto act3 = Sequence::create({act1, act2});
-    //a1->runAction(act3);
+    ball = Sprite::create(L"Image\\circle.png");
+    this->addChild(ball);
 }

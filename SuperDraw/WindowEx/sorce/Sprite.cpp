@@ -1,3 +1,11 @@
+//
+//  Sprite.cpp
+//
+//  Created by Oranges.
+//  E-mail 873516725@qq.com
+//  Copyright 2021 Oranges. All rights reserved.
+//
+
 #include "Sprite.h"
 
 #include "Director.h"
@@ -5,9 +13,9 @@
 #include "Tools.h"
 
 using namespace std;
+using namespace WindowEx;
 
-Sprite* Sprite::create(const wstring& fileName)
-{
+Sprite* Sprite::create(const wstring& fileName) {
     auto sp = new (std::nothrow) Sprite{fileName};
     if (sp) {
         sp->autorelease();
@@ -16,15 +24,13 @@ Sprite* Sprite::create(const wstring& fileName)
     return nullptr;
 }
 
-Sprite::Sprite(const wstring& fileName)
-{
+Sprite::Sprite(const wstring& fileName) {
     this->image = ImagePool::instance->loadImage(fileName);
 }
 
 Sprite::~Sprite() {}
 
-void Sprite::draw(DrawFactory* drawFactory, const Vec2& vecDelta)
-{
+void Sprite::draw(DrawFactory* drawFactory, const Vec2& vecDelta) {
     if (!isVisible()) {
         return;
     }
