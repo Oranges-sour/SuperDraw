@@ -61,6 +61,6 @@ bool Layer0::init() {
 
 void Layer0::createBall() {
     auto size = Director::instance->getVisibleSize();
-    ball = Sprite::create(L"Image\\circle.png");
+    ball = Sprite::create(LR"(Image\circle.png)");
     this->addChild(ball);
 }

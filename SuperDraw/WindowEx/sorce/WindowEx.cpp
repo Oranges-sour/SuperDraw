@@ -225,9 +225,6 @@ void DrawFactory::drawString(const Vec2& leftTop, const Vec2& rightBottom,
 }
 void DrawFactory::drawImage(const Vec2& leftTop, Image* img, float alpha) {
     D2D1_SIZE_F size = img->pBitmap->GetSize();
-    /*D2D1_RECT_F rect = {leftTop.x * dpiScale, leftTop.y * dpiScale,
-                        (leftTop.x + size.width) * dpiScale,
-                        (leftTop.y + size.height) * dpiScale};*/
     D2D1_RECT_F rect = {leftTop.x, leftTop.y, leftTop.x + size.width,
                         leftTop.y + size.height};
     pRT->DrawBitmap(img->pBitmap, rect, alpha);

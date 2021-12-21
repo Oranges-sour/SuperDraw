@@ -2,13 +2,14 @@
 using namespace WindowEx;
 
 #include <chrono>
+#include <mutex>
 #include <string>
 #include <thread>
 using namespace std;
 using namespace std::chrono;
 
-#include <ShellScalingApi.h>
-#pragma comment(lib, "Shcore.lib")
+#include <WinUser.h>
+#pragma comment(lib, "User32.lib")
 #include <windowsx.h>
 #pragma comment(lib, "winmm.lib")
 
@@ -50,11 +51,16 @@ float dpiScale;
 DrawFactory* drawFactory = nullptr;
 AppDelegate* appDelegate = nullptr;
 
+thread* mainThread = nullptr;
+mutex mainThreadMutex;
+
 }  // namespace
 
 // windows窗口程序的入口点
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
                    _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
+
+    mainThreadMutex.lock();
     mainInit();
 
     MSG msg = {0};
@@ -63,6 +69,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
         DispatchMessage(&msg);
     }
 
+    mainThreadMutex.unlock();
     mainRelease();
 
     return 0;
@@ -128,17 +135,6 @@ LRESULT CALLBACK windowCallBack(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     return 0;
 }
 
-void WINAPI mainLoopTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1,
-                          DWORD dw2) {
-    if (wTimerID == timerID) {
-        time1 = steady_clock::now();
-        float dt = duration_cast<duration<float>>(time1 - time0).count();
-        time0 = time1;
-        Director::instance->mainLoop(dt);
-    }
-    return;
-}
-
 void mainInit() {
     //设置时间精度
     timeBeginPeriod(1);
@@ -163,16 +159,28 @@ void mainInit() {
 
     //记录第一次的时间
     time0 = steady_clock::now();
-    //启动主循环定时器
-    timerID =
-        timeSetEvent(TMath::floatRoundInt(1000 / min(appInfo.frameRate, 1000)),
-                     1, LPTIMECALLBACK(mainLoopTimer), DWORD(1), TIME_PERIODIC);
+
+    mainThread = new thread([&]() {
+        while (true) {
+            time1 = steady_clock::now();
+            float dt = duration_cast<duration<float>>(time1 - time0).count();
+            time0 = time1;
+            Director::instance->mainLoop(dt);
+            if (mainThreadMutex.try_lock()) {
+                mainThreadMutex.unlock();
+                break;
+            }
+        }
+    });
 
     SetCursor(LoadCursorW(NULL, IDC_ARROW));
 }
 
 void mainRelease() {
     //释放资源
+    mainThread->join();
+    delete mainThread;
+
     timeEndPeriod(1);
     Director::destoryInstance();
     delete drawFactory;
@@ -181,9 +189,7 @@ void mainRelease() {
 
 void setDPI() {
     //高DPI适配
-    SetProcessDpiAwareness(PROCESS_SYSTEM_DPI_AWARE);
-    auto monitor = MonitorFromPoint(POINT{1, 1}, MONITOR_DEFAULTTONULL);
-    UINT dpiX, dpiY;
-    GetDpiForMonitor(monitor, MDT_EFFECTIVE_DPI, &dpiX, &dpiY);
-    dpiScale = float(dpiX) / 96.0f;
+    SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
+    int dpi = GetDpiForSystem();
+    dpiScale = float(dpi) / 96.0f;
 }
