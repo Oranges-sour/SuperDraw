@@ -18,9 +18,9 @@
 #include <chrono>
 #include <string>
 
-#ifdef _WIN64
-#error Only on x86!
-#endif
+//#ifdef _WIN64
+//#error Only on x86!
+//#endif
 
 #ifndef __cplusplus
 #error Only on C++!

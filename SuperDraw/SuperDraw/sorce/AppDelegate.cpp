@@ -12,7 +12,7 @@
 #include "SuperDraw.h"
 
 void AppDelegate::init() {
-    appInfo.frameRate = 65;
+    appInfo.frameRate = 100;
     appInfo.windowSize = Size(1280, 720);
     appInfo.windowName = L"test";
     Random::init();

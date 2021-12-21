@@ -2,9 +2,5 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-/SuperDraw/Debug
-/.vs/SuperDraw/v16
-/SuperDraw/SuperDraw/Debug
-/SuperDraw/SuperDraw/x64/Debug
-/SuperDraw/WindowEx/Debug
-/SuperDraw/.vs/SuperDraw/v16
+**/Debug
+**/.vs
