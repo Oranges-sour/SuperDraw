@@ -40,27 +40,14 @@ Layer0* Layer0::create() {
 
 bool Layer0::init() {
     Director::instance->setDebugDraw(true);
-    createBall();
 
-    auto mouse = EventReceiverLMouse::create(this, 1);
-    mouse->mouseMove = [&](const Vec2& pos) -> void { ball->setPosition(pos); };
-    mouse->mouseDown = [&](const Vec2& pos) -> void {
-        auto act0 = ScaleTo::create(0.8f, 1.5f);
-        auto eact0 = EaseAction::create(act0, 3, EaseFunction::easeInOut);
-        ball->stopAllActions();
-        ball->runAction(eact0);
-    };
-    mouse->mouseUp = [&](const Vec2& pos) -> void {
-        auto act1 = ScaleTo::create(0.8f, 1.0f);
-        auto eact1 = EaseAction::create(act1, 3, EaseFunction::easeInOut);
-        ball->stopAllActions();
-        ball->runAction(eact1);
-    };
+    auto l =
+        Label::create(L"Î¢ÈíÑÅºÚ", L"Ôªµ©¿ìÀÖ", 48, Rect(500, 500, 1000, 20),
+                      FontWeight::light, FontStyle::normal);
+    this->addChild(l);
+
+    auto a0 = MoveTo::create(10, Vec2(20, 20));
+    l->runAction(a0);
+
     return true;
-}
-
-void Layer0::createBall() {
-    auto size = Director::instance->getVisibleSize();
-    ball = Sprite::create(LR"(Image\circle.png)");
-    this->addChild(ball);
 }

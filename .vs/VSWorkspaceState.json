@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\SuperDraw",
+    "\\SuperDraw\\SuperDraw",
+    "\\SuperDraw\\SuperDraw\\sorce"
   ],
-  "SelectedNode": "\\SuperDraw",
+  "SelectedNode": "\\SuperDraw\\SuperDraw.sln",
   "PreviewInSolutionExplorer": false
 }

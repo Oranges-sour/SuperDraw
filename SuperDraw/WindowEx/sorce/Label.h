@@ -19,7 +19,7 @@
 class Label : public Node {
 public:
     /*
-    @param rect: 坐标为左上角点    
+    @param rect: 坐标为左上角点
     */
     static Label* create(const std::wstring& font,
                          const std::wstring& text = std::wstring(L""),
@@ -49,10 +49,12 @@ public:
     void setRect(const Rect& rect);
     const Rect& getRect() const;
 
-private:
-    void setPosition(float, float) override {}
-    void setPosition(const Vec2&) override {}
-    const Vec2& getPosition() const override { return Vec2::ZERO; }
+    void setPosition(float x, float y) override;
+    void setPosition(const Vec2& pos) override;
+    const Vec2& getPosition() const override;
+
+    void setOpacity(float opacity) override;
+    float getOpacity() override;
 
 private:
     float fontSize = 0;

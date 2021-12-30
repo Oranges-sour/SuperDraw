@@ -1,3 +1,22 @@
-﻿  WindowEx.cpp
+﻿  Action.cpp
+  Director.cpp
+  DrawNode.cpp
+  EventDispatcher.cpp
+  ImagePool.cpp
+  KeyboardHelper.cpp
+  Label.cpp
+  Layer.cpp
+  Node.cpp
+  Random.cpp
+  Ref.cpp
+  Scene.cpp
+  Schedule.cpp
+  Sprite.cpp
+  SuperDraw.cpp
+  TMath.cpp
+  Tools.cpp
+  UI.cpp
+  WindowEx.cpp
 C:\Users\87351\Desktop\SuperDraw\SuperDraw\WindowEx\sorce\WindowEx.cpp(224,79): warning C4267: “参数”: 从“size_t”转换到“UINT32”，可能丢失数据
+  正在生成代码...
   WindowEx.vcxproj -> C:\Users\87351\Desktop\SuperDraw\SuperDraw\x64\Debug\WindowEx.lib

@@ -78,3 +78,13 @@ const Color4F& Label::getColor() const { return color; }
 void Label::setRect(const Rect& rect) { this->rect = rect; }
 
 const Rect& Label::getRect() const { return rect; }
+
+void Label::setPosition(float x, float y) { rect.p0 = Vec2(x, y); }
+
+void Label::setPosition(const Vec2& pos) { rect.p0 = pos; }
+
+const Vec2& Label::getPosition() const { return rect.p0; }
+
+void Label::setOpacity(float opacity) { color.alpha = opacity; }
+
+float Label::getOpacity() { return color.alpha; }

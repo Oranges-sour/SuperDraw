@@ -14,11 +14,8 @@ public:
 
 class Layer0 : public Layer {
 public:
-    void createBall();
     static Layer0* create();
     virtual bool init() override;
 
-private:
-    Sprite* ball = nullptr;
 };
 #endif
