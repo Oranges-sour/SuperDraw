@@ -1,2 +1,2 @@
 # SuperDraw
-A graphic library.
+轻量的图形引擎
