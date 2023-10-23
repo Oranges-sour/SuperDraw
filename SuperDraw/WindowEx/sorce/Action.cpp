@@ -27,6 +27,10 @@ ActionInterval::~ActionInterval() {}
 void ActionInterval::firstCall() {}
 
 void ActionInterval::step(float time) {
+    if (runFinish) {
+        return;
+    }
+
     if (_firstCall) {
         firstCall();
         _firstCall = false;
@@ -73,6 +77,9 @@ Sequence::~Sequence() {
 }
 
 void Sequence::step(float time) {
+    if (runFinish) {
+        return;
+    }
     auto& act = actions.front();
     act->step(time);
     if (act->isRunFinish()) {
@@ -88,7 +95,7 @@ void Sequence::setNode(Node* node) {
     if (actions.empty()) {
         return;
     }
-    //±éÀúÒ»±é¶ÓÁÐ
+    //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½
     auto& firstAct = actions.front();
     firstAct->setNode(node);
     actions.pop();
@@ -128,6 +135,10 @@ Spawn::~Spawn() {
 }
 
 void Spawn::step(float time) {
+    if (runFinish) {
+        return;
+    }
+
     bool allFinish = true;
     for (auto& act : actions) {
         act->step(time);
@@ -164,6 +175,10 @@ DelayTime::DelayTime(float duration) { this->duration = duration; }
 DelayTime::~DelayTime() {}
 
 void DelayTime::step(float time) {
+    if (runFinish) {
+        return;
+    }
+
     pastTime += time;
     if (pastTime >= duration) {
         runFinish = true;
@@ -188,6 +203,9 @@ CallFunc::CallFunc(const function<void()>& func) { this->func = func; }
 CallFunc::~CallFunc() {}
 
 void CallFunc::step(float time) {
+    if (runFinish) {
+        return;
+    }
     func();
     runFinish = true;
 }
@@ -210,6 +228,9 @@ CallFuncN::CallFuncN(const function<void(Node*)>& func) { this->func = func; }
 CallFuncN::~CallFuncN() {}
 
 void CallFuncN::step(float time) {
+    if (runFinish) {
+        return;
+    }
     func(node);
     runFinish = true;
 }
