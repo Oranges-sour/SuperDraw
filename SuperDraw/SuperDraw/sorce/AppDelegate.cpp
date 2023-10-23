@@ -13,7 +13,7 @@
 
 void AppDelegate::init() {
     appInfo.frameRate = 60;
-    appInfo.windowSize = Size(1280, 720);
+    appInfo.windowSize = Size(1000, 620);
     appInfo.windowName = L"test";
     Random::init();
 }
