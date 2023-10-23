@@ -41,13 +41,71 @@ Layer0* Layer0::create() {
 bool Layer0::init() {
     Director::instance->setDebugDraw(true);
 
-    auto l =
-        Label::create(L"Î¢ÈíÑÅºÚ", L"Ôªµ©¿ìÀÖ", 48, Rect(500, 500, 1000, 20),
-                      FontWeight::light, FontStyle::normal);
-    this->addChild(l);
 
-    auto a0 = MoveTo::create(10, Vec2(20, 20));
-    l->runAction(a0);
+    auto p = Sprite::create(L"1111.png");
+
+
+    this->addChild(p, 2);
+
+    rand_int x(100, 1100);
+    rand_int y(100, 700);
+
+    p->setPosition(Vec2(500, 350));
+
+    auto a1 = FadeIn::create(1);
+    auto e1 = EaseAction::create(a1, 1.1, EaseFunction::easeInOut);
+
+    auto a2 = FadeOut::create(1);
+    auto e2 = EaseAction::create(a2, 1.1, EaseFunction::easeInOut);
+
+    auto s1 = Sequence::create({e1, e2});
+
+    auto a11 = ScaleTo::create(0.4, 0.9);
+    auto e11 = EaseAction::create(a11, 1.1, EaseFunction::easeInOut);
+
+    auto a22 = ScaleTo::create(0.6, 10 / 9);
+    auto e22 = EaseAction::create(a22, 1.1, EaseFunction::easeInOut);
+
+    auto s2 = Sequence::create({e11, e22});
+
+    auto s = Spawn::create({s1, s2});
+
+    p->runAction(s);
+
+    this->schedule(
+        [this, p](float) {
+            auto a1 = FadeIn::create(1);
+            auto e1 = EaseAction::create(a1, 1.1, EaseFunction::easeInOut);
+
+            auto a2 = FadeOut::create(1);
+            auto e2 = EaseAction::create(a2, 1.1, EaseFunction::easeInOut);
+
+            auto s1 = Sequence::create({e1, e2});
+
+            auto a11 = ScaleTo::create(0.4, 0.9);
+            auto e11 = EaseAction::create(a11, 1.1, EaseFunction::easeInOut);
+
+            auto a22 = ScaleTo::create(0.6, 10 / 9);
+            auto e22 = EaseAction::create(a22, 1.1, EaseFunction::easeInOut);
+
+            auto s2 = Sequence::create({e11, e22});
+
+            auto s = Spawn::create({s1, s2});
+
+            p->runAction(s);
+        },
+        2, L"1");
+      
+
+    
+
+   
+
+
+
+   
+
+
 
     return true;
 }
